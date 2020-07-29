@@ -81,29 +81,34 @@ export default function Board({ tasks, updateTasks }) {
                 onDrop={(e) => handleDrop(e, item.key)}
                 onDragOver={(e) => e.preventDefault()}
               >
-                <h2>{item.label}</h2>
+                <h2 align="center">{item.label}</h2>
+                <div className="separator"></div>
+                <Spacer y={1}></Spacer>
                 <div>
                   {item.tasks.map((task) => {
                     return (
-                      <Card
-                        draggable={true}
-                        onDrag={(e) => handleDrag(e, task.id)}
-                        onDragEnd={handleDragEnd}
-                      >
-                        <Padding all={1}>
-                          <div>{task.task}</div>
-                          <div>
-                            <Button onClick={(e) => deleteTask(task.id)}>
-                              Delete
-                            </Button>
-                          </div>
-                        </Padding>
-                      </Card>
+                      <>
+                        <Card
+                          draggable={true}
+                          onDrag={(e) => handleDrag(e, task.id)}
+                          onDragEnd={handleDragEnd}
+                        >
+                          <Padding all={1}>
+                            <div>{task.task}</div>
+                            <div>
+                              <Button onClick={(e) => deleteTask(task.id)}>
+                                Delete
+                              </Button>
+                            </div>
+                          </Padding>
+                        </Card>
+                        <Spacer y={1}></Spacer>
+                      </>
                     );
                   })}
                 </div>
               </div>
-              <Spacer y={3} />
+              <Spacer x={3} inline />
             </>
           );
         })}
@@ -118,9 +123,14 @@ export default function Board({ tasks, updateTasks }) {
           }
 
           .drop-container {
-            background: #ededed;
             width: 250px;
-            min-height: 250px;
+            min-height: 100vh;
+          }
+
+          .separator {
+            height: 1px;
+            width: 100%;
+            background: #ededed;
           }
         `}
       </style>
