@@ -10,8 +10,7 @@ export default function Home() {
     localforage
       .getItem("tasks")
       .then((data) => {
-        console.log(data);
-        setTasks(data);
+        setTasks(data || []);
       })
       .catch((err) => {
         console.log(err);
