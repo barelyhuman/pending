@@ -1,6 +1,7 @@
 import Card from "./card";
 import Padding from "./padding";
 import Button from "./button";
+import Spacer from "./spacer";
 
 const taskStatus = {
   BACKLOG: 0,
@@ -10,23 +11,29 @@ const taskStatus = {
 };
 
 export default function Board({ tasks, updateTasks }) {
+  let draggingTask;
+
   const cardTypes = [
     {
       label: "Backlog",
+      key: taskStatus.BACKLOG,
       tasks: tasks.filter(
         (item) => item.status === taskStatus.BACKLOG || !item.status
       ),
     },
     {
       label: "Active",
+      key: taskStatus.ACTIVE,
       tasks: tasks.filter((item) => item.status === taskStatus.ACTIVE),
     },
     {
       label: "Blocked",
+      key: taskStatus.BLOCKED,
       tasks: tasks.filter((item) => item.status === taskStatus.BLOCKED),
     },
     {
       label: "Done",
+      key: taskStatus.DONE,
       tasks: tasks.filter((item) => item.status === taskStatus.DONE),
     },
   ];
@@ -50,51 +57,73 @@ export default function Board({ tasks, updateTasks }) {
     updateTasks(_tasks);
   };
 
+  const handleDrag = (e, taskId) => {
+    draggingTask = taskId;
+  };
+
+  const handleDrop = (e, dropzoneType) => {
+    moveTo(draggingTask, dropzoneType);
+    draggingTask = null;
+  };
+
+  const handleDragEnd = (e) => {
+    e.target.style.position = "static";
+  };
+
   return (
     <>
-      {cardTypes.map((item) => {
-        return (
-          <>
-            <h2>{item.label}</h2>
-            <div>
-              {item.tasks.map((task) => {
-                return (
-                  <Card>
-                    <Padding all={1}>
-                      <div>{task.task}</div>
-                      <div>
-                        <Button
-                          onClick={(e) => moveTo(task.id, taskStatus.ACTIVE)}
-                        >
-                          Move to Active
-                        </Button>
-                        <Button
-                          onClick={(e) => moveTo(task.id, taskStatus.DONE)}
-                        >
-                          Move to Done
-                        </Button>
-                        <Button
-                          onClick={(e) => moveTo(task.id, taskStatus.BLOCKED)}
-                        >
-                          Move to Blocked
-                        </Button>
-                        <Button
-                          onClick={(e) => moveTo(task.id, taskStatus.BACKLOG)}
-                        >
-                          Move to Backlog
-                        </Button>
-                        <Button onClick={(e) => deleteTask(task.id)}>
-                          Delete
-                        </Button>
-                      </div>
-                    </Padding>
-                  </Card>
-                );
-              })}
-            </div>
-          </>
-        );
-      })}
+      <div className="card-container">
+        {cardTypes.map((item) => {
+          return (
+            <>
+              <div
+                className="drop-container"
+                onDrop={(e) => handleDrop(e, item.key)}
+                onDragOver={(e) => e.preventDefault()}
+              >
+                <h2>{item.label}</h2>
+                <div>
+                  {item.tasks.map((task) => {
+                    return (
+                      <Card
+                        draggable={true}
+                        onDrag={(e) => handleDrag(e, task.id)}
+                        onDragEnd={handleDragEnd}
+                      >
+                        <Padding all={1}>
+                          <div>{task.task}</div>
+                          <div>
+                            <Button onClick={(e) => deleteTask(task.id)}>
+                              Delete
+                            </Button>
+                          </div>
+                        </Padding>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+              <Spacer y={3} />
+            </>
+          );
+        })}
+      </div>
+
+      <style jsx>
+        {`
+          .card-container {
+            display: flex;
+            overflow-x: auto;
+            max-width: 100vw;
+          }
+
+          .drop-container {
+            background: #ededed;
+            width: 250px;
+            min-height: 250px;
+          }
+        `}
+      </style>
     </>
   );
 }
