@@ -42,6 +42,14 @@ export default function Board({ tasks, updateTasks }) {
     updateTasks(_tasks);
   };
 
+  const deleteTask = (taskId) => {
+    const _tasks = tasks.filter((item) => {
+      return item.id !== taskId;
+    });
+
+    updateTasks(_tasks);
+  };
+
   return (
     <>
       {cardTypes.map((item) => {
@@ -74,6 +82,9 @@ export default function Board({ tasks, updateTasks }) {
                           onClick={(e) => moveTo(task.id, taskStatus.BACKLOG)}
                         >
                           Move to Backlog
+                        </Button>
+                        <Button onClick={(e) => deleteTask(task.id)}>
+                          Delete
                         </Button>
                       </div>
                     </Padding>
