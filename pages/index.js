@@ -3,6 +3,9 @@ import localforage from "localforage";
 import { useState, useEffect } from "react";
 import Board from "components/board";
 import { v4 as uuidv4 } from "uuid";
+import Padding from "components/padding";
+import Separator from "components/separator";
+import Spacer from "components/spacer";
 
 export default function Home() {
   const [tasks, setTasks] = useState([]);
@@ -53,13 +56,40 @@ export default function Home() {
 
   return (
     <>
-      <Input
-        placeholder="What's on your mind?"
-        value={taskValue}
-        onChange={handleEnterKey}
-        onKeyUp={handleEnterKey}
-      />
-      <Board tasks={tasks} updateTasks={setTasks}></Board>
+      <Padding all={2}>
+        <p align="center" className="m-0 p-0">
+          <h1 align="center" className="m-0 p-0">
+            Pending
+          </h1>
+          <span>
+            <small>Simple Kanban Board</small>
+          </span>
+        </p>
+        <Spacer y={3} />
+        <div class="input-container">
+          <Input
+            placeholder="What's on your mind?"
+            value={taskValue}
+            onChange={handleEnterKey}
+            onKeyUp={handleEnterKey}
+          />
+        </div>
+        <Spacer y={2} />
+        <Board tasks={tasks} updateTasks={setTasks}></Board>
+      </Padding>
+      <style jsx>{`
+        .input-container {
+          width: 100%;
+        }
+
+        .m-0 {
+          margin: 0;
+        }
+
+        .p-0 {
+          padding: 0;
+        }
+      `}</style>
     </>
   );
 }

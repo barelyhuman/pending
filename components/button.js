@@ -1,7 +1,11 @@
-export default function Button({ children, ...props }) {
+import cn from "classnames";
+export default function Button({ children, mini, ...props }) {
+  const classNames = cn({ mini });
   return (
     <>
-      <button {...props}>{children}</button>
+      <button className={classNames} {...props}>
+        {children}
+      </button>
       <style jsx>{`
         button {
           background: #000;
@@ -21,6 +25,12 @@ export default function Button({ children, ...props }) {
           outline: #000;
           color: #000;
           background: #fff;
+        }
+
+        button.mini {
+          height: 24px;
+          font-size: 12px;
+          padding: 0 8px;
         }
       `}</style>
     </>

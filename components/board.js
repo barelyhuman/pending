@@ -2,6 +2,7 @@ import Card from "./card";
 import Padding from "./padding";
 import Button from "./button";
 import Spacer from "./spacer";
+import Separator from "./separator";
 
 const taskStatus = {
   BACKLOG: 0,
@@ -82,7 +83,7 @@ export default function Board({ tasks, updateTasks }) {
                 onDragOver={(e) => e.preventDefault()}
               >
                 <h2 align="center">{item.label}</h2>
-                <div className="separator"></div>
+                <Separator />
                 <Spacer y={1}></Spacer>
                 <div>
                   {item.tasks.map((task) => {
@@ -93,10 +94,11 @@ export default function Board({ tasks, updateTasks }) {
                           onDrag={(e) => handleDrag(e, task.id)}
                           onDragEnd={handleDragEnd}
                         >
-                          <Padding all={1}>
+                          <Padding all={2}>
                             <div>{task.task}</div>
+                            <Spacer y={1}></Spacer>
                             <div>
-                              <Button onClick={(e) => deleteTask(task.id)}>
+                              <Button mini onClick={(e) => deleteTask(task.id)}>
                                 Delete
                               </Button>
                             </div>
@@ -120,17 +122,12 @@ export default function Board({ tasks, updateTasks }) {
             display: flex;
             overflow-x: auto;
             max-width: 100vw;
+            justify-content: center;
           }
 
           .drop-container {
             width: 250px;
             min-height: 100vh;
-          }
-
-          .separator {
-            height: 1px;
-            width: 100%;
-            background: #ededed;
           }
         `}
       </style>
