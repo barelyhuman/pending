@@ -1,7 +1,13 @@
-import '../styles/globals.css'
+import "../styles/globals.css";
+import Head from "components/head";
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+function App({ Component, pageProps }) {
+  return (
+    <>
+      <Head />
+      <Component {...pageProps} />
+    </>
+  );
 }
 
-export default MyApp
+export default App;
