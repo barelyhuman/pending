@@ -1,6 +1,8 @@
 import Input from "components/input";
 import localforage from "localforage";
 import { useState, useEffect } from "react";
+import Board from "components/board";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Home() {
   const [tasks, setTasks] = useState([]);
@@ -10,7 +12,9 @@ export default function Home() {
     localforage
       .getItem("tasks")
       .then((data) => {
-        setTasks(data || []);
+        const _data = reformatData(data);
+
+        setTasks(_data || []);
       })
       .catch((err) => {
         console.log(err);
@@ -20,9 +24,7 @@ export default function Home() {
   useEffect(() => {
     localforage
       .setItem("tasks", tasks)
-      .then((_) => {
-        console.log("updated");
-      })
+      .then((_) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -31,9 +33,22 @@ export default function Home() {
   const handleEnterKey = (e) => {
     setTaskValue(e.target.value);
     if (e.keyCode === 13) {
-      setTasks([...tasks, { task: e.target.value }]);
+      setTasks([...tasks, { id: uuidv4(), task: e.target.value }]);
       setTaskValue("");
     }
+  };
+
+  const reformatData = (data) => {
+    if (!data) {
+      return [];
+    }
+
+    return data.map((item) => {
+      if (!item.id) {
+        item.id = uuidv4();
+      }
+      return item;
+    });
   };
 
   return (
@@ -44,11 +59,7 @@ export default function Home() {
         onChange={handleEnterKey}
         onKeyUp={handleEnterKey}
       />
-      <ul>
-        {tasks.map((task, index) => {
-          return <li key={index}>{task.task}</li>;
-        })}
-      </ul>
+      <Board tasks={tasks} updateTasks={setTasks}></Board>
     </>
   );
 }

@@ -8,9 +8,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "classnames": "^2.2.6",
     "localforage": "^1.8.1",
     "next": "9.5.0",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "uuid": "^8.3.0"
   }
 }
