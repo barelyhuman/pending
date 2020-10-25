@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import Padding from "components/padding";
 import Separator from "components/separator";
 import Spacer from "components/spacer";
+import Link from "next/link";
 
 export default function Home() {
   const [tasks, setTasks] = useState([]);
@@ -65,6 +66,12 @@ export default function Home() {
             <small>Simple Kanban Board</small>
           </span>
         </p>
+        <Spacer y={2} />
+        <div align="center">
+          <Link href="/login">Login</Link>
+          <Spacer x={1} inline />
+          <Link href="/register">Register</Link>
+        </div>
         <Spacer y={3} />
         <div class="input-container">
           <Input
