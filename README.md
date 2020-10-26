@@ -1,30 +1,19 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Pending
+Simple Kanban Project Tracker
 
-## Getting Started
+## Motivation
+Just a side project that started as a offline browser kanban and is moving towards a proper app for people and teams to use while focusing on making it easier for me to track all my ideas and projects.
 
-First, run the development server:
+### Goal
+A simplistic and easy to use project tasks tracker with certain features I wish I can translate from my paper tracking approach.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## Develop 
+ - Fork this repository 
+ - Create a branch in the format `fix|feat|chore-<issue-id>` replace `<issue-id>` with the issue you are fixing and use `fix|feat|chore` appropriately. Eg: a fix from issue 122 will be `fix-122`, a feature request on issue id 10 will be `feat-10`. Optionally, if you'd like to, add a short name after it. `fix-122-replace-schema`.
+ - Make needed fixes/changes
+ - Make a pull request.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contribute
+You are free to pick up any issues as the pop up and raise a pull request. Code style is already handled by Standard JS and other standards can be referred to, with the existing code.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
