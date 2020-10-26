@@ -1,6 +1,10 @@
 import { useState } from 'react'
+import axios from 'axios'
+import ToastNotification from 'lib/toast'
+import { useRouter } from 'next/router'
 
 export default function LoginScreen ({ ...props }) {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -14,6 +18,23 @@ export default function LoginScreen ({ ...props }) {
 
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value)
+  }
+
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post('/api/auth/register', {
+        email,
+        password,
+        confirmPassword
+      })
+
+      if (response.data.id) {
+        router.push('/')
+      }
+    } catch (err) {
+      console.error(err)
+      ToastNotification.error(err.response.data.message)
+    }
   }
 
   return (
@@ -32,7 +53,9 @@ export default function LoginScreen ({ ...props }) {
           <input type='password' onKeyUp={handleConfirmPasswordChange} />
         </div>
         <div>
-          <button type='submit'>Log In</button>
+          <button type='submit' onClick={handleSubmit}>
+            Register
+          </button>
         </div>
       </div>
     </>

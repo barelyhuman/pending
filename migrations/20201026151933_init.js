@@ -187,7 +187,7 @@ exports.up = function (knex) {
       table.increments('id').primary().unique().notNullable()
       table.text('token').unique().notNullable()
       table.boolean('is_verified').defaultTo('false').notNullable()
-      table.interger('user_id').notNullable()
+      table.integer('user_id').notNullable()
 
       table.timestamps(true, true)
 

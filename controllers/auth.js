@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt'
 import { getDbInstance } from 'lib/db'
 import { ResponseError } from 'lib/response-error'
 import randomString from 'crypto-random-string'
+import { serialize } from 'cookie'
 
 const AuthController = {
   async login ({ req, res }) {
@@ -27,9 +28,17 @@ const AuthController = {
         })
         .select('users.id', 'users.email', 'users.password')
 
+      if (!userDetails || !userDetails.length) {
+        return res.status(400).send(
+          ResponseError({
+            err: "Couldn't find any User with the specified email"
+          })
+        )
+      }
+
       const isValidPassword = bcrypt.compare(
         payload.password,
-        userDetails.password
+        userDetails[0].password
       )
 
       if (!isValidPassword) {
@@ -40,17 +49,33 @@ const AuthController = {
 
       const accessToken = this._generateToken()
 
+      trx = await db.transaction()
+
       const addToTokens = await trx('access_tokens')
         .insert({
-          user_id: userDetails.id,
+          user_id: userDetails[0].id,
           token: accessToken,
           is_verified: true
         })
         .returning(['token'])
 
+      await trx.commit()
+
+      res.setHeader(
+        'Set-Cookie',
+        serialize('auth', addToTokens[0].token, {
+          expires: new Date(
+            new Date().setFullYear(new Date().getFullYear() + 1)
+          ),
+          httpOnly: true,
+          path: '/',
+          sameSite: 'lax'
+        })
+      )
+
       return res.send({
         data: {
-          token: addToTokens[0].token
+          success: true
         }
       })
     } catch (err) {
@@ -63,7 +88,7 @@ const AuthController = {
       return res
         .status(500)
         .send(
-          ResponseError({ message: 'Oops! Something went wrong', error: err })
+          ResponseError({ message: 'Oops! Something went wrong', err: err })
         )
     }
   },
@@ -98,23 +123,27 @@ const AuthController = {
         })
         .select('users.email')
 
-      if (userDetails) {
+      if (userDetails && userDetails.length) {
         return res
           .status(400)
           .send(ResponseError({ err: 'User with this email already exists' }))
       }
 
-      const addedUser = await db('users')
+      trx = await db.transaction()
+
+      const addedUser = await trx('users')
         .insert({
           email: this._normalizeEmail(payload.email),
           password: await this._hashPassword(payload.password)
         })
         .returning(['id'])
 
+      await trx.commit()
+
       return res.send({
         id: addedUser[0].id
       })
-    } catch (error) {
+    } catch (err) {
       console.error(err)
       if (trx) {
         await trx.rollback()
@@ -122,7 +151,7 @@ const AuthController = {
       return res
         .status(500)
         .send(
-          ResponseError({ message: 'Oops! Something went wrong', error: err })
+          ResponseError({ message: 'Oops! Something went wrong', err: err })
         )
     }
   },
@@ -132,13 +161,14 @@ const AuthController = {
   forgotPassword ({ req, res }) {},
 
   _generateToken () {
-    return randomString({ length: 10, type: 'alphanumeric' })
+    return randomString({ length: 65, type: 'alphanumeric' })
   },
   _normalizeEmail (email) {
     return email.toLowerCase().trim()
   },
   async _hashPassword (textPassword) {
-    return bcrypt.hash(textPassword)
+    const saltRounds = 15
+    return bcrypt.hash(textPassword, saltRounds)
   }
 }
 

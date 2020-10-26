@@ -55,6 +55,11 @@ export default function Home () {
     })
   }
 
+  function fetchMe () {
+    // add logic for fetching user, if gives a 401, unauthenticated user
+    // , if gives the user data then authenticated
+  }
+
   return (
     <>
       <Padding all={2}>
