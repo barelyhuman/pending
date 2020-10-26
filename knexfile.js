@@ -1,41 +1,41 @@
 module.exports = {
   development: {
-    client: "postgresql",
+    client: 'postgresql',
     connection: {
-      database: "pending",
-      user: "admin",
-      password: "root",
+      database: 'pending',
+      user: 'admin',
+      password: 'root'
     },
     pool: {
       min: 2,
-      max: 10,
+      max: 10
     },
     migrations: {
-      tableName: "knex_migrations",
-    },
+      tableName: 'knex_migrations'
+    }
   },
 
   staging: {
-    client: "postgresql",
+    client: 'postgresql',
     connection: process.env.DB_URL,
     pool: {
       min: 2,
-      max: 10,
+      max: 10
     },
     migrations: {
-      tableName: "knex_migrations",
-    },
+      tableName: 'knex_migrations'
+    }
   },
 
   production: {
-    client: "postgresql",
+    client: 'postgresql',
     connection: process.env.DB_URL,
     pool: {
       min: 2,
-      max: 10,
+      max: 10
     },
     migrations: {
-      tableName: "knex_migrations",
-    },
-  },
-};
+      tableName: 'knex_migrations'
+    }
+  }
+}

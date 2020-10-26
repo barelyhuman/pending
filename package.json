@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "format": "npx standard --fix | echo 'Fixed Everything I could.'"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
@@ -21,8 +22,7 @@
   },
   "devDependencies": {
     "husky": ">=4",
-    "lint-staged": ">=10",
-    "prettier": "^2.1.2"
+    "lint-staged": ">=10"
   },
   "husky": {
     "hooks": {
@@ -30,6 +30,6 @@
     }
   },
   "lint-staged": {
-    "*.{js,css,md}": "prettier --write"
+    "*": "npm run format"
   }
 }

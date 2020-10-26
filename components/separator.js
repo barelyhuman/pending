@@ -1,7 +1,7 @@
-export default function Separator(props) {
+export default function Separator (props) {
   return (
     <>
-      <div className="separator"></div>
+      <div className='separator' />
       <style jsx>
         {`
           .separator {
@@ -12,5 +12,5 @@ export default function Separator(props) {
         `}
       </style>
     </>
-  );
+  )
 }

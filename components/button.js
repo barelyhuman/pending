@@ -1,6 +1,6 @@
-import cn from "classnames";
-export default function Button({ children, mini, ...props }) {
-  const classNames = cn({ mini });
+import cn from 'classnames'
+export default function Button ({ children, mini, ...props }) {
+  const classNames = cn({ mini })
   return (
     <>
       <button className={classNames} {...props}>
@@ -32,7 +32,8 @@ export default function Button({ children, mini, ...props }) {
           font-size: 12px;
           padding: 0 8px;
         }
-      `}</style>
+      `}
+      </style>
     </>
-  );
+  )
 }

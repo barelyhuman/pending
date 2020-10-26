@@ -1,3 +1,3 @@
 export default async (req, res) => {
-  res.send({ status: "up" });
-};
+  res.send({ status: 'up' })
+}

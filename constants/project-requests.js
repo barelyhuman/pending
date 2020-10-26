@@ -1,3 +1,3 @@
 module.exports = {
-  types: ["bug", "feature", "query"],
-};
+  types: ['bug', 'feature', 'query']
+}

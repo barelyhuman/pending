@@ -1,3 +1,3 @@
 module.exports = {
-  roles: ["owner", "member"],
-};
+  roles: ['owner', 'member']
+}

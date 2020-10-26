@@ -1,4 +1,4 @@
-export default function Input({ children, ...props }) {
+export default function Input ({ children, ...props }) {
   return (
     <>
       <input {...props} />
@@ -22,7 +22,8 @@ export default function Input({ children, ...props }) {
           border-color: #000;
           outline: #000;
         }
-      `}</style>
+      `}
+      </style>
     </>
-  );
+  )
 }
