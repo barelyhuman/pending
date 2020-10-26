@@ -22,7 +22,7 @@ const AuthController = {
 
       const userDetails = await db('users')
         .where({
-          email: payload.email,
+          email: this._normalizeEmail(payload.email),
           is_active: true
         })
         .select('users.id', 'users.email', 'users.password')
@@ -62,11 +62,70 @@ const AuthController = {
 
       return res
         .status(500)
-        .send({ message: 'Oops! Something went wrong', error: err })
+        .send(
+          ResponseError({ message: 'Oops! Something went wrong', error: err })
+        )
     }
   },
 
-  register ({ req, res }) {},
+  async register ({ req, res }) {
+    let trx
+    try {
+      const payload = req.body
+
+      const db = getDbInstance()
+
+      if (!payload.email) {
+        return res.status(400).send(ResponseError({ err: 'Email Required' }))
+      }
+
+      if (!payload.password) {
+        return res
+          .status(400)
+          .send(ResponseError({ err: 'Password Required' }))
+      }
+
+      if (!payload.confirmPassword) {
+        return res
+          .status(400)
+          .send(ResponseError({ err: 'Please enter a password confirmation' }))
+      }
+
+      const userDetails = await db('users')
+        .where({
+          email: this._normalizeEmail(payload.email),
+          is_active: true
+        })
+        .select('users.email')
+
+      if (userDetails) {
+        return res
+          .status(400)
+          .send(ResponseError({ err: 'User with this email already exists' }))
+      }
+
+      const addedUser = await db('users')
+        .insert({
+          email: this._normalizeEmail(payload.email),
+          password: await this._hashPassword(payload.password)
+        })
+        .returning(['id'])
+
+      return res.send({
+        id: addedUser[0].id
+      })
+    } catch (error) {
+      console.error(err)
+      if (trx) {
+        await trx.rollback()
+      }
+      return res
+        .status(500)
+        .send(
+          ResponseError({ message: 'Oops! Something went wrong', error: err })
+        )
+    }
+  },
 
   resetPassword ({ req, res }) {},
 
@@ -74,6 +133,12 @@ const AuthController = {
 
   _generateToken () {
     return randomString({ length: 10, type: 'alphanumeric' })
+  },
+  _normalizeEmail (email) {
+    return email.toLowerCase().trim()
+  },
+  async _hashPassword (textPassword) {
+    return bcrypt.hash(textPassword)
   }
 }
 
