@@ -187,7 +187,15 @@ exports.up = function (knex) {
       table.increments("id").primary().unique().notNullable();
       table.text("token").unique().notNullable();
       table.boolean("is_verified").defaultTo("false").notNullable();
+      table.interger("user_id").notNullable();
+
       table.timestamps(true, true);
+
+      table
+        .foreign("user_id")
+        .references("users.id")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
     })
     .createTable("project_requests", function (table) {
       table.increments("id").unique().primary().notNullable();
