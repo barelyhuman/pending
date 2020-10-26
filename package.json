@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
+    "knex": "^0.21.7",
     "localforage": "^1.8.1",
     "next": "9.5.0",
+    "pg": "^8.4.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "uuid": "^8.3.0"
