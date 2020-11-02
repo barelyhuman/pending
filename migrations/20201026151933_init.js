@@ -186,6 +186,7 @@ exports.up = function (knex) {
     .createTable('access_tokens', function (table) {
       table.increments('id').primary().unique().notNullable()
       table.text('token').unique().notNullable()
+      table.boolean('is_active').defaultTo('true').notNullable()
       table.boolean('is_verified').defaultTo('false').notNullable()
       table.integer('user_id').notNullable()
 

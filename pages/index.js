@@ -4,15 +4,19 @@ import { useState, useEffect } from 'react'
 import Board from 'components/board'
 import { v4 as uuidv4 } from 'uuid'
 import Padding from 'components/padding'
-import Separator from 'components/separator'
 import Spacer from 'components/spacer'
 import Link from 'next/link'
+import axios from 'axios'
 
 export default function Home () {
   const [tasks, setTasks] = useState([])
   const [taskValue, setTaskValue] = useState('')
+  const [authenticated, setAuthenticated] = useState(false)
+  const [username, setUsername] = useState('')
 
   useEffect(() => {
+    fetchMe()
+
     localforage
       .getItem('tasks')
       .then((data) => {
@@ -56,29 +60,48 @@ export default function Home () {
   }
 
   function fetchMe () {
-    // add logic for fetching user, if gives a 401, unauthenticated user
-    // , if gives the user data then authenticated
+    axios
+      .get('/api/me')
+      .then((response) => {
+        if (response.data) {
+          setUsername(response.data.email)
+          setAuthenticated(true)
+        }
+      })
+      .catch((err) => {
+        if (err.status === 401) {
+          setAuthenticated(false)
+        }
+      })
   }
 
   return (
     <>
       <Padding all={2}>
+        <h1 align='center' className='m-0 p-0'>
+          Pending
+        </h1>
         <p align='center' className='m-0 p-0'>
-          <h1 align='center' className='m-0 p-0'>
-            Pending
-          </h1>
           <span>
             <small>Simple Kanban Board</small>
           </span>
         </p>
         <Spacer y={2} />
-        <div align='center'>
-          <Link href='/login'>Login</Link>
-          <Spacer x={1} inline />
-          <Link href='/register'>Register</Link>
-        </div>
+        {!authenticated ? (
+          <>
+            <div align='center'>
+              <Link href='/login'>Login</Link>
+              <Spacer x={1} inline />
+              <Link href='/register'>Register</Link>
+            </div>
+          </>
+        ) : (
+          <>
+            <div align='center'>Hello, {username}</div>
+          </>
+        )}
         <Spacer y={3} />
-        <div class='input-container'>
+        <div className='input-container'>
           <Input
             placeholder="What's on your mind?"
             value={taskValue}
@@ -89,19 +112,20 @@ export default function Home () {
         <Spacer y={2} />
         <Board tasks={tasks} updateTasks={setTasks} />
       </Padding>
-      <style jsx>{`
-        .input-container {
-          width: 100%;
-        }
+      <style jsx>
+        {`
+          .input-container {
+            width: 100%;
+          }
 
-        .m-0 {
-          margin: 0;
-        }
+          .m-0 {
+            margin: 0;
+          }
 
-        .p-0 {
-          padding: 0;
-        }
-      `}
+          .p-0 {
+            padding: 0;
+          }
+        `}
       </style>
     </>
   )
