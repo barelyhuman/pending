@@ -7,6 +7,7 @@ import Padding from 'components/padding'
 import Spacer from 'components/spacer'
 import Link from 'next/link'
 import axios from 'axios'
+import AuthNav from 'components/auth-nav'
 
 export default function Home () {
   const [tasks, setTasks] = useState([])
@@ -15,8 +16,6 @@ export default function Home () {
   const [username, setUsername] = useState('')
 
   useEffect(() => {
-    fetchMe()
-
     localforage
       .getItem('tasks')
       .then((data) => {
@@ -78,15 +77,9 @@ export default function Home () {
   return (
     <>
       <Padding all={2}>
-        <h1 align='center' className='m-0 p-0'>
-          Pending
-        </h1>
-        <p align='center' className='m-0 p-0'>
-          <span>
-            <small>Simple Kanban Board</small>
-          </span>
-        </p>
-        <Spacer y={2} />
+        <>
+          <AuthNav />
+        </>
         {!authenticated ? (
           <>
             <div align='center'>

@@ -160,6 +160,19 @@ const AuthController = {
 
   forgotPassword ({ req, res }) {},
 
+  logout ({ req, res }) {
+    res.setHeader(
+      'Set-Cookie',
+      serialize('auth', '', {
+        maxAge: -1,
+        path: '/',
+        sameSite: 'lax'
+      })
+    )
+
+    return res.end()
+  },
+
   _generateToken () {
     return randomString({ length: 65, type: 'alphanumeric' })
   },
