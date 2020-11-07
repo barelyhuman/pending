@@ -12,8 +12,6 @@ import AuthNav from 'components/auth-nav'
 export default function Home () {
   const [tasks, setTasks] = useState([])
   const [taskValue, setTaskValue] = useState('')
-  const [authenticated, setAuthenticated] = useState(false)
-  const [username, setUsername] = useState('')
 
   useEffect(() => {
     localforage
@@ -58,41 +56,12 @@ export default function Home () {
     })
   }
 
-  function fetchMe () {
-    axios
-      .get('/api/me')
-      .then((response) => {
-        if (response.data) {
-          setUsername(response.data.email)
-          setAuthenticated(true)
-        }
-      })
-      .catch((err) => {
-        if (err.status === 401) {
-          setAuthenticated(false)
-        }
-      })
-  }
-
   return (
     <>
       <Padding all={2}>
         <>
           <AuthNav />
         </>
-        {!authenticated ? (
-          <>
-            <div align='center'>
-              <Link href='/login'>Login</Link>
-              <Spacer x={1} inline />
-              <Link href='/register'>Register</Link>
-            </div>
-          </>
-        ) : (
-          <>
-            <div align='center'>Hello, {username}</div>
-          </>
-        )}
         <Spacer y={3} />
         <div className='input-container'>
           <Input

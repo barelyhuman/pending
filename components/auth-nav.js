@@ -6,12 +6,14 @@ import { useRouter } from 'next/router'
 
 export default function AuthNav ({ ...props }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [username, setUsername] = useState('')
 
   const router = useRouter()
 
   useEffect(() => {
-    const authChanges = AuthFactory.onAuthStatusChange((auth) => {
-      setIsAuthenticated(auth)
+    const authChanges = AuthFactory.onAuthStatusChange((status) => {
+      setIsAuthenticated(status.authStatus)
+      setUsername(status.user.email)
     })
     return authChanges.unsubscribe
   }, [])
@@ -35,6 +37,19 @@ export default function AuthNav ({ ...props }) {
         </span>
       </p>
       <Spacer y={2} />
+      {!isAuthenticated ? (
+        <>
+          <div align='center'>
+            <Link href='/login'>Login</Link>
+            <Spacer x={1} inline />
+            <Link href='/register'>Register</Link>
+          </div>
+        </>
+      ) : (
+        <>
+          <div align='center'>Hello, {username}</div>
+        </>
+      )}
       {isAuthenticated ? (
         <nav>
           <ul>
