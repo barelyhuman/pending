@@ -65,7 +65,7 @@ export default function AuthNav ({ ...props }) {
             <Link href='/settings'>
               <a>Settings</a>
             </Link>
-            <a href='#' onClick={handleLogout}>
+            <a href='' onClick={handleLogout}>
               Logout
             </a>
           </ul>
