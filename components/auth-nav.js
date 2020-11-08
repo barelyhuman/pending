@@ -18,8 +18,9 @@ export default function AuthNav ({ ...props }) {
     return authChanges.unsubscribe
   }, [])
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
     AuthFactory.logout()
+    return router.push('/login')
   }
 
   return (
@@ -61,7 +62,7 @@ export default function AuthNav ({ ...props }) {
             <Link href='/settings'>
               <a>Settings</a>
             </Link>
-            <a href='' onClick={handleLogout}>
+            <a onClick={handleLogout} className='error-text trigger'>
               Logout
             </a>
           </ul>
@@ -72,6 +73,10 @@ export default function AuthNav ({ ...props }) {
           nav ul a {
             display: inline-block;
             margin-right: 16px;
+          }
+
+          .trigger {
+            cursor: pointer;
           }
         `}
       </style>
