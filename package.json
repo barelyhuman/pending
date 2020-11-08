@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prestart":"npx knex migrate:latest",
     "start": "next start",
     "format": "npx standard --fix | echo 'Fixed Everything I could.'"
   },
