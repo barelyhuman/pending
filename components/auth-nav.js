@@ -20,10 +20,6 @@ export default function AuthNav ({ ...props }) {
 
   const handleLogout = () => {
     AuthFactory.logout()
-    setTimeout(() => {
-      router.reload()
-      router.push('/')
-    }, 500)
   }
 
   return (
