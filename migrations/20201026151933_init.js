@@ -125,7 +125,7 @@ exports.up = function (knex) {
       table.text('description').notNullable()
       table.boolean('is_active').notNullable().default(true)
       table.bigInteger('time_spent').notNullable().default(0)
-      table.integer('team_id').notNullable()
+      table.integer('team_id').nullable()
       table.integer('user_id').notNullable()
 
       table.timestamps(true, true)

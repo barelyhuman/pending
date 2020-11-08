@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 import Padding from 'components/padding'
 import Spacer from 'components/spacer'
 import Link from 'next/link'
-import axios from 'axios'
+import axios from 'lib/axios'
 import AuthNav from 'components/auth-nav'
 
 export default function Home () {
