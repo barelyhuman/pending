@@ -170,6 +170,8 @@ const AuthController = {
       })
     )
 
+    res.writeHead(302, { Location: '/login' })
+    res.end()
     return res.end()
   },
 
