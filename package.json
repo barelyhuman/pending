@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild":"npx knex migrate:latest",
+    "postbuild": "npx knex migrate:latest",
     "start": "next start",
     "format": "npx standard --fix | echo 'Fixed Everything I could.'"
   },
@@ -18,7 +18,7 @@
     "knex": "^0.21.7",
     "localforage": "^1.9.0",
     "next": "^9.5.5",
-    "pg": "^8.4.1",
+    "pg": "7",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "toastify-js": "^1.9.3",
