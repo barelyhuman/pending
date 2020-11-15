@@ -31,7 +31,11 @@ export default function Projects () {
     const projectlistNodes = projectList.map((item) => {
       return (
         <>
-          <li>{item.project.name}</li>
+          <li>
+            <Link href={`/boards/${item.project.id}`}>
+              {item.project.name}
+            </Link>
+          </li>
         </>
       )
     })
